@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ 	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+		
+   <errorHandler id="loggingErrorHandler" type="LoggingErrorHandler" logName="foo" level="INFO" xmlns="http://camel.apache.org/schema/spring"/>
+
+   <bean id="bizFrameExchangeTracer" class="kr.co.bizframe.esb.camel.event.BizFrameExchangeStatusEventNotifer">
+	<property name="excludeRoutes">
+      <list value-type="java.lang.String">
+        <value>sendTrace</value>
+      </list>
+    </property>
+   </bean>
+   
+   <bean id="routeIdTraceFilter" class="kr.co.bizframe.esb.camel.tracer.RouteIdPredicate">
+	   <property name="excludeRoutes">
+		  <list value-type="java.lang.String">
+			<value>sendTrace</value>
+		  </list>
+		</property>
+   </bean>
+   
+   <bean id="camelTracer" class="org.apache.camel.processor.interceptor.Tracer">
+    <!-- turn on jpa tracing, otherwise the TraceEventMessage is a non JPA Entity class -->
+    <property name="useJpa" value="true"/>
+    <!-- the destination to send the traced messages -->
+    <property name="destination" ref="traced"/>
+    <!-- we turn ordinary trace logging off so we only see the traced messages in the database,
+         but you can have both if you like -->
+    <property name="logLevel" value="OFF"/>
+	<property name="traceOutExchanges" value="true" />
+	<property name="traceFilter" ref="routeIdTraceFilter"/>
+  </bean>
+  
+  <bean id="traceFormatter" class="org.apache.camel.processor.interceptor.DefaultTraceFormatter">
+    <property name="showOutBody" value="true" />
+    <property name="showOutBodyType" value="true" />
+  </bean>
+
+	<bean id="jetty" class="org.apache.camel.component.jetty9.JettyHttpComponent9">
+	</bean>
+	
+	<!--bean id="mockTracer" class="io.opentracing.mock.MockTracer"/-->
+
+	<!-- setup opentracing tracer -->
+	<!--bean id="ottracer" class="org.apache.camel.opentracing.OpenTracingTracer">
+		<property name="tracer" ref="mockTracer"/>
+	</bean-->
+
+ 	<camelContext id="came-http-server" xmlns="http://camel.apache.org/schema/spring" streamCache="true" trace="true" errorHandlerRef="loggingErrorHandler">
+
+		<jmxAgent id="agent" createConnector="false"/>
+		<endpoint id="traced" uri="jpa://kr.co.bizframe.esb.camel.tracer.BizFrameJpaTraceEventMessage?persistenceUnit=bizframeTracer"/>
+		
+	    <route id="sendTrace" trace="false">
+			<from uri="timer://foo?fixedRate=true&amp;period=5000"/>
+			<to uri="bean:bizFrameExchangeTracer?method=sendFinishedExchangeInfos"/>
+			<choice>
+		  	<when>
+		  		<simple>${bodyAs(String).length} > 0</simple>
+				<log message="in body size : ${bodyAs(String).length}"/>		
+				<to uri="jetty:http://localhost:8083/trace"/>
+				<log message="-----------------response body : ${in.body}"/>
+				<to uri="bean:bizFrameExchangeTracer?method=clearFinishedExchangeInfos"/>
+		  	</when>
+		  </choice>
+		</route>
+		
+
+		<route id="http-server" trace="true">
+		  <from uri="jetty:http://localhost:9090/myService/"/>
+		  <to uri="file:c:/data/camel/dest"/>
+	    </route>
+
+	</camelContext>
+
+ </beans>

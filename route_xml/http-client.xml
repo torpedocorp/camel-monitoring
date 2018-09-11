@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ 	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+ 
+  <!-- START SNIPPET: tracingOutExchanges -->  
+  <bean id="camelTracer" class="org.apache.camel.processor.interceptor.Tracer">
+    <property name="traceOutExchanges" value="true" />
+  </bean>
+
+  <bean id="traceFormatter" class="org.apache.camel.processor.interceptor.DefaultTraceFormatter">
+    <property name="showOutBody" value="true" />
+    <property name="showOutBodyType" value="true" />
+  </bean>
+  
+ 	<bean id="jetty" class="org.apache.camel.component.jetty9.JettyHttpComponent9">
+	</bean>
+
+ 	<camelContext id="camel-http-client" xmlns="http://camel.apache.org/schema/spring" trace="true">
+	    <jmxAgent id="agent" createConnector="true" registryPort="11099"/>
+		<route id="http-client">
+		  <from uri="file:c:/data/camel/input?noop=true&amp;delay=5000"/>
+		  <to uri="http://localhost:9090/myService/"/>
+	    </route>
+	</camelContext>
+ </beans>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+	<!-- monitoring -->
+   	<bean id="monitoringRouteBuilder" class="kr.co.bizframe.esb.camel.monitoring.MonitoringRouteBuilder"/>
+   	<!-- monitoring -->
+	
+	<camelContext id="bean-test" xmlns="http://camel.apache.org/schema/spring">
+	
+		<!-- monitoring -->
+		<jmxAgent id="agent" createConnector="false" registryPort="11099" />
+		<routeBuilder ref="monitoringRouteBuilder"/>				
+		<!-- monitoring -->
+		
+		<!-- <route id="bean-test">
+			<from uri="file:c:/data/camel/input?noop=true&amp;delay=5000" />
+			 <setBody>
+        		<simple>Hello from Camel's AMQP example</simple>
+      		</setBody>
+		</route> -->	
+		<route id="http-client">
+		  <from uri="file:c:/data/camel/input?noop=true&amp;delay=5000"/>
+		  <to uri="http://localhost:9011/myService/"/>
+	    </route>
+	</camelContext>
+
+  
+</beans>

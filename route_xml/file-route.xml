@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ 	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+	
+	<!--bean id="camelTracer" class="org.apache.camel.processor.interceptor.Tracer">
+	  <property name="useJpa" value="true"/>
+	  <property name="destination" ref="traced"/>
+	  <property name="logLevel" value="OFF"/>
+	</bean-->
+	
+<!-- 	<bean id="camelTracer" class="org.apache.camel.processor.interceptor.Tracer">
+		<property name="logName" value="MyTracerLog" />
+		<property name="logLevel" value="info" />
+	</bean>
+	<bean id="traceFormatter" class="org.apache.camel.processor.interceptor.DefaultTraceFormatter">
+		<property name="showHeaders" value="true" />
+		<property name="showProperties" value="true" />
+	</bean> -->
+
+  <!-- START SNIPPET: e1 -->
+  <!-- use camel jpa trace so we can see all the traced exchanges in a database -->
+  <bean id="camelTracer" class="org.apache.camel.processor.interceptor.Tracer">
+    <!-- turn on jpa tracing, otherwise the TraceEventMessage is a non JPA Entity class -->
+    <property name="useJpa" value="true"/>
+    <!-- the destination to send the traced messages -->
+    <property name="destination" ref="traced"/>
+    <!-- we turn ordinary trace logging off so we only see the traced messages in the database,
+         but you can have both if you like -->
+    <property name="logLevel" value="OFF"/>
+  </bean>
+  <!-- END SNIPPET: e1 -->
+
+   
+ 	<camelContext id="camel-file" xmlns="http://camel.apache.org/schema/spring" trace="true" >		
+		<jmxAgent id="agent" createConnector="true"/>
+		<endpoint id="traced" uri="jpa://kr.co.bizframe.esb.camel.tracer.BizFrameJpaTraceEventMessage?persistenceUnit=bizframeTracer"/>
+	    <route id="file_test">
+		  <from uri="file:/c:/data/camel/input?noop=false&amp;delete=true"/>
+		  <to uri="file:/c:/data/camel/dest"/>
+	    </route>
+	</camelContext>
+
+ </beans>
