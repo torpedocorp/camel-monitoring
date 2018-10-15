@@ -9,24 +9,26 @@
 	<!-- monitoring -->
    	<bean id="monitoringRouteBuilder" class="kr.co.bizframe.esb.camel.monitoring.MonitoringRouteBuilder"/>
    	<!-- monitoring -->
-	
-	<camelContext id="bean-test" xmlns="http://camel.apache.org/schema/spring">
-	
+   	
+	<camelContext id="camel-direct-loop" xmlns="http://camel.apache.org/schema/spring">
 		<!-- monitoring -->
 		<routeBuilder ref="monitoringRouteBuilder"/>				
 		<!-- monitoring -->
 		
-		<!-- <route id="bean-test">
-			<from uri="file:c:/data/camel/input?noop=true&amp;delay=5000" />
-			 <setBody>
-        		<simple>Hello from Camel's AMQP example</simple>
-      		</setBody>
-		</route> -->	
-		<route id="http-client">
-		  <from uri="file:c:/data/camel/input?noop=true&amp;delay=5000"/>
-		  <to uri="http://localhost:9011/myService/"/>
-	    </route>
-	</camelContext>
+		<restConfiguration bindingMode="auto" component="jetty" host="localhost" port="10030">
+			<componentProperty key="foo" value="bar" />
+		</restConfiguration>
+		<route id="parent">
+			<from uri="file:///home/bumma/data/camel/input?delete=false" />
+            <loop>
+				<constant>10</constant>
+				<to uri="seda:input" />
+			</loop>			
+		</route>
 
-  
+		<route id="rest-1">
+			<from uri="seda:input" />
+			<to uri="rest:get:say/hello" />
+		</route>	
+</camelContext>
 </beans>

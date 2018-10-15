@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+ 	
+	<camelContext id="camel-direct-loop" xmlns="http://camel.apache.org/schema/spring">
+		
+		<restConfiguration bindingMode="auto" component="jetty" host="192.168.10.2" port="10030">
+			<componentProperty key="foo" value="bar" />
+		</restConfiguration>
+		<route id="parent">
+			<from uri="file:/c:/data/camel/input?noop=true&amp;delete=false" />
+			<loop>
+				<constant>50</constant>
+				<to uri="seda:input" />
+			</loop>
+			
+		</route>
+
+		<route id="rest-1">
+			<from uri="seda:input" />
+			<to uri="rest:get:say/hello" />
+		</route>
+	</camelContext>
+</beans>

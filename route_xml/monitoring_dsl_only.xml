@@ -20,7 +20,8 @@
 
 		<route id="http-client">
 		  <from uri="file:c:/data/camel/input?noop=true&amp;delay=5000"/>
-		  <to uri="http://localhost:9091/myService/"/>
+		  <to uri="http://localhost:9090/myService/"/>
+		  <log message="response body : ${in.body}"/>
 	    </route>
 		
 		<!-- <route id="bean-test">

@@ -5,7 +5,7 @@
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
-	
+
 	<bean id="bizFrameExchangeTracer" class="kr.co.bizframe.esb.camel.monitoring.exchange.BizFrameExchangeTracer">
 		<property name="excludeRoutes">
 			<list value-type="java.lang.String">
@@ -52,6 +52,6 @@
 				<process ref="bizFrameExchangeTracerErrorProcessor" />
 		  </onException>
 		</route>
-		
+				
     </routeContext>
 </beans>
