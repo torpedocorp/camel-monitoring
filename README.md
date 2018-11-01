@@ -3,6 +3,7 @@
 camel-monitoring은 camel 기반의 어플리케이션을 모니터링 하기 위한 에이전트 컴포넌트 입니다.
 <!--more-->
 jpa, rest api 를 사용하여 모니터링 데이터를 수집
+<!--more-->
 hawtio를 사용하여 JMX 모니터링을 할 수 있음
 
 ## feature
