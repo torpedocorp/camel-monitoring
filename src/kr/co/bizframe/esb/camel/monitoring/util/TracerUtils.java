@@ -72,6 +72,7 @@ public class TracerUtils {
 
 	public static File getWriteFileDir() {
 		String dir = null;
+		
 		if (properties != null) {
 			dir = properties.getProperty("file.save.dir");
 		}

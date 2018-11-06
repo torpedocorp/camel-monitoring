@@ -26,7 +26,7 @@ public class BizFrameJpaTraceEventMessage implements TraceEventMessage, Serializ
 
 	@Id
 	private String id;
-
+	
 	private Date timestamp;
 	private String fromEndpointUri;
 	private String previousNode;
