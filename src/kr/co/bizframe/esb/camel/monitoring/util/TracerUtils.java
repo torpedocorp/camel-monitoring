@@ -32,6 +32,9 @@ public class TracerUtils {
 		}
 	}
 	
+	/*
+		config init
+	*/ 
 	public static void initConfig() throws Throwable {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		InputStream is = null;
