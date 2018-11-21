@@ -20,5 +20,5 @@ hawtio를 사용하여 JMX 모니터링을 할 수 있음
 
  1. jdk 8 이상 설치 
  2. apache ant 설치
- 3. camel-monitoring 프로젝트 저장소에서 소스를 clone 혹은 다운로 (https://github.com/torpedocorp/camel-monitoring)
+ 3. camel-monitoring 프로젝트 저장소에서 소스를 clone 혹은 다운로드 (https://github.com/torpedocorp/camel-monitoring)
  4. 커맨드 라인상에서 ant build 수행
