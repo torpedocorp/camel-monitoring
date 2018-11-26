@@ -32,9 +32,6 @@ public class TracerUtils {
 		}
 	}
 	
-	/*
-		config init
-	*/ 
 	public static void initConfig() throws Throwable {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		InputStream is = null;
@@ -72,7 +69,6 @@ public class TracerUtils {
 
 	public static File getWriteFileDir() {
 		String dir = null;
-		
 		if (properties != null) {
 			dir = properties.getProperty("file.save.dir");
 		}
@@ -177,7 +173,7 @@ public class TracerUtils {
 		return null;
 	}
 	
-	public static File saveFile(File parent, String id, String body) throws Throwable {
+	public static File saveFile(File parent, String id, String body) throws Exception {
 		if (body == null) {
 			return null;
 		}

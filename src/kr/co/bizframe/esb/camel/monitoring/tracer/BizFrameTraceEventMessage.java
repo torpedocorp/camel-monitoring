@@ -1,5 +1,8 @@
 package kr.co.bizframe.esb.camel.monitoring.tracer;
+import static kr.co.bizframe.esb.camel.monitoring.util.TracerUtils.getWriteFileDir;
+import static kr.co.bizframe.esb.camel.monitoring.util.TracerUtils.saveFile;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -43,15 +46,23 @@ public final class BizFrameTraceEventMessage implements Serializable, TraceEvent
      *
      * @param toNode the node where this trace is intercepted
      * @param exchange the current {@link Exchange}
+     * @throws Exception 
      */
-    public BizFrameTraceEventMessage(final Date timestamp, final ProcessorDefinition<?> toNode, final Exchange exchange) {
+    public BizFrameTraceEventMessage(final Date timestamp, final ProcessorDefinition<?> toNode, final Exchange exchange) throws Exception {
         this.tracedExchange = exchange;
         Message in = exchange.getIn();
 
         // need to use defensive copies to avoid Exchange altering after the point of interception
         this.timestamp = timestamp;
         this.fromEndpointUri = exchange.getFromEndpoint() != null ? exchange.getFromEndpoint().getEndpointUri() : null;
-        this.previousNode = extractFromNode(exchange);
+        this.previousNode = extractFromNode(exchange);	
+        
+        try {
+        	if (this.previousNode == null) {
+        		this.previousNode = toNode.getParent().getId();
+        	}
+        } catch (Throwable e) {        	
+        }
         //this.toNode = extractToNode(exchange);        
         this.toNode = toNode.getId();
         this.exchangeId = exchange.getExchangeId();
@@ -61,18 +72,34 @@ public final class BizFrameTraceEventMessage implements Serializable, TraceEvent
         this.properties = exchange.getProperties().isEmpty() ? null : exchange.getProperties().toString();
         this.headers = in.getHeaders().isEmpty() ? null : in.getHeaders().toString();
         // We should not turn the message body into String
-        this.body = MessageHelper.extractBodyForLogging(in, "");
+        
         this.bodyType = MessageHelper.getBodyTypeName(in);
-        if (exchange.hasOut()) {
-            Message out = exchange.getOut();
-            this.outHeaders = out.getHeaders().isEmpty() ? null : out.getHeaders().toString();
-            this.outBody = MessageHelper.extractBodyAsString(out);
-            this.outBodyType = MessageHelper.getBodyTypeName(out);
+        if ("org.apache.camel.converter.stream.InputStreamCache".equals(this.bodyType)) {
+        	this.body = saveFileAndGetPath("in_" + this.exchangeId, MessageHelper.extractBodyAsString(in));
+        } else {
+        	this.body = MessageHelper.extractBodyForLogging(in, "");
         }
+        
+		if (exchange.hasOut()) {
+			Message out = exchange.getOut();
+			this.outHeaders = out.getHeaders().isEmpty() ? null : out.getHeaders().toString();
+			//this.outBody = MessageHelper.extractBodyAsString(out);
+			this.outBody = saveFileAndGetPath("out_" + this.exchangeId, MessageHelper.extractBodyAsString(out));
+			this.outBodyType = MessageHelper.getBodyTypeName(out);
+		}
         this.causedByException = extractCausedByException(exchange);
         this.traceInOut = extractInout(exchange);
     }
-
+    
+    private static String saveFileAndGetPath(String id, String body) throws Exception {
+		File parent = getWriteFileDir();
+		File file = saveFile(parent, id, body);
+		if (file == null) {
+			return null;
+		}
+		return file.getCanonicalPath();
+	}
+    
     // Implementation
     //---------------------------------------------------------------
 
@@ -99,9 +126,9 @@ public final class BizFrameTraceEventMessage implements Serializable, TraceEvent
 
     private static String extractFromNode(Exchange exchange) {
         if (exchange.getUnitOfWork() != null) {
-            TracedRouteNodes traced = exchange.getUnitOfWork().getTracedRouteNodes();
+            TracedRouteNodes traced = exchange.getUnitOfWork().getTracedRouteNodes();           
             if (traced != null) {
-                RouteNode last = traced.getSecondLastNode();
+                RouteNode last = traced.getSecondLastNode();                
                 return last != null ? last.getLabel(exchange) : null;
             }
         }

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -21,27 +23,43 @@ import org.apache.camel.processor.interceptor.TraceEventMessage;
  */
 @Entity
 @Table(name = "BIZFRAME_CAMEL_MESSAGETRACED")
+@Access(AccessType.FIELD)
 public class BizFrameJpaTraceEventMessage implements TraceEventMessage, Serializable {
 	private static final long serialVersionUID = -3577516047575267548L;
 
 	@Id
 	private String id;
-	
+
 	private Date timestamp;
 	private String fromEndpointUri;
-	private String previousNode;
+	private String previousNode;	
 	private String toNode;
 	private String exchangeId;
 	private String shortExchangeId;
 	private String exchangePattern;
+	
+	@Column(length = 32672)
 	private String properties;
+	
+	@Column(length = 32672)
 	private String headers;
+	
+	@Column(length = 32672)
 	private String body;
+	
 	private String bodyType;
+	
+	@Column(length = 32672)
 	private String outHeaders;
+	
+	@Column(length = 32672)
 	private String outBody;
+	
 	private String outBodyType;
+	
+	@Column(length = 32672)
 	private String causedByException;
+	
 	private String routeId;
 	private String agentId;
 	private String traceInOut;
@@ -75,7 +93,7 @@ public class BizFrameJpaTraceEventMessage implements TraceEventMessage, Serializ
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
-
+	
 	public String getPreviousNode() {
 		return previousNode;
 	}
@@ -124,8 +142,6 @@ public class BizFrameJpaTraceEventMessage implements TraceEventMessage, Serializ
 		this.exchangePattern = exchangePattern;
 	}
 
-	// @Lob
-	@Column(columnDefinition = "VARCHAR(32672)")
 	public String getProperties() {
 		return properties;
 	}
@@ -134,8 +150,6 @@ public class BizFrameJpaTraceEventMessage implements TraceEventMessage, Serializ
 		this.properties = properties;
 	}
 
-	// @Lob
-	@Column(columnDefinition = "VARCHAR(32672)")
 	public String getHeaders() {
 		return headers;
 	}
@@ -144,7 +158,6 @@ public class BizFrameJpaTraceEventMessage implements TraceEventMessage, Serializ
 		this.headers = headers;
 	}
 
-	// @Lob
 	public String getBody() {
 		return body;
 	}
@@ -161,7 +174,6 @@ public class BizFrameJpaTraceEventMessage implements TraceEventMessage, Serializ
 		this.bodyType = bodyType;
 	}
 
-	// @Lob
 	public String getOutBody() {
 		return outBody;
 	}
@@ -186,8 +198,6 @@ public class BizFrameJpaTraceEventMessage implements TraceEventMessage, Serializ
 		this.outHeaders = outHeaders;
 	}
 
-	// @Lob
-	@Column(columnDefinition = "VARCHAR(32672)")
 	public String getCausedByException() {
 		return causedByException;
 	}

@@ -23,19 +23,16 @@
              version="1.0">
 
   <persistence-unit name="bizframeTracer" transaction-type="RESOURCE_LOCAL">
-    <class>kr.co.bizframe.esb.camel.monitoring.tracer.BizFrameJpaTraceEventMessage</class>
-    <properties>
-      <property name="hibernate.dialect" value="kr.co.bizframe.esb.camel.monitoring.tracer.FixedDerbyDialect"/>
-      <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.ClientDriver"/>
-      <property name="hibernate.connection.url" value="jdbc:derby://localhost:3333/./../data/db/trace;create=true"/>
-      <property name="hibernate.hbm2ddl.auto" value="update"/>
-	  <property name="hibernate.connection.username" value="app"/>
-	  <property name="hibernate.connection.password" value="app"/>
-
-      <!-- debugging flags -->
-      <property name="hibernate.show_sql" value="true"/>
-      <property name="hibernate.format_sql" value="true"/>
-    </properties>
-  </persistence-unit>
+  	<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+    <class>kr.co.bizframe.esb.camel.monitoring.tracer.BizFrameJpaTraceEventMessage</class>   
+		<properties>
+			<property name="openjpa.ConnectionDriverName" value="org.apache.derby.jdbc.ClientDriver" />
+			<property name="openjpa.ConnectionURL" value="jdbc:derby://localhost:3333/./../data/db/trace;create=true" />
+			<property name="openjpa.ConnectionUserName" value="app"/>
+      		<property name="openjpa.ConnectionPassword" value="app"/>
+      		<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema"/>
+			<property name="openjpa.RuntimeUnenhancedClasses" value="supported"/>
+       </properties>
+	</persistence-unit>
 </persistence>
   <!-- END SNIPPET: e1 -->

@@ -64,7 +64,6 @@ public class BizFrameTraceEventHandler implements TraceEventHandler, Service {
 	public void traceExchange(ProcessorDefinition<?> node, Processor target, TraceInterceptor traceInterceptor,
 			Exchange exchange) throws Exception {
 		if (tracer.getDestination() != null || tracer.getDestinationUri() != null) {
-
 			// create event exchange and add event information
 			Date timestamp = new Date();
 			Exchange event = new DefaultExchange(exchange);

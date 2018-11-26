@@ -11,13 +11,10 @@ import static kr.co.bizframe.esb.camel.monitoring.util.TracerUtils.isTraceExchan
 
 import java.net.ConnectException;
 
-import org.apache.camel.Exchange;
 import org.apache.camel.LoggingLevel;
-import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.jpa.JpaEndpoint;
 import org.apache.camel.processor.interceptor.DefaultTraceFormatter;
-import org.apache.camel.processor.interceptor.Tracer;
 
 import kr.co.bizframe.esb.camel.monitoring.exchange.BizFrameExchangeTracer;
 import kr.co.bizframe.esb.camel.monitoring.exchange.ExchangeTracerErrorProcessor;

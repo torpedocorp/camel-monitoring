@@ -8,51 +8,44 @@ import org.apache.camel.processor.interceptor.TraceEventHandler;
 import org.apache.camel.processor.interceptor.TraceFormatter;
 import org.apache.camel.processor.interceptor.Tracer;
 import org.apache.camel.spi.InterceptStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BizFrameTracer extends Tracer {
 
 	private static final String JPA_TRACE_EVENT_MESSAGE = "kr.co.bizframe.esb.camel.monitoring.tracer.BizFrameJpaTraceEventMessage";
-
+	private static Logger log = LoggerFactory.getLogger(BizFrameTracer.class);
+	
 	private String logName = BizFrameTracer.class.getName();
 	private final List<TraceEventHandler> traceHandlers = new CopyOnWriteArrayList<>();
 	private String jpaTraceEventMessageClassName = JPA_TRACE_EVENT_MESSAGE;
 
 	public BizFrameTracer() {
 		traceHandlers.add(new BizFrameTraceEventHandler(this));
+		
 	}
 
-	/**
-	 * Creates a new tracer.
-	 *
-	 * @param context
-	 *            Camel context
-	 * @return a new tracer
-	 */
-	public static BizFrameTracer createBizFrameTracer(CamelContext context) {
-		BizFrameTracer tracer = new BizFrameTracer();
-		// lets see if we have a formatter if so use it
-		TraceFormatter formatter = context.getRegistry().lookupByNameAndType("traceFormatter", TraceFormatter.class);
-		if (formatter != null) {
-			tracer.setFormatter(formatter);
-		}
-		return tracer;
-	}
-
-	/**
-	 * A helper method to return the BizFrameTracer instance if one is enabled
-	 *
-	 * @return the tracer or null if none can be found
-	 */
-	public static BizFrameTracer getBizFrameTracer(CamelContext context) {
-		List<InterceptStrategy> list = context.getInterceptStrategies();
-		for (InterceptStrategy interceptStrategy : list) {
-			if (interceptStrategy instanceof BizFrameTracer) {
-				return (BizFrameTracer) interceptStrategy;
-			}
-		}
-		return null;
-	}
-
+	public static Tracer createTracer(CamelContext context) {
+        Tracer tracer = new BizFrameTracer();
+        // lets see if we have a formatter if so use it
+        TraceFormatter formatter = context.getRegistry().lookupByNameAndType("traceFormatter", TraceFormatter.class);
+        if (formatter != null) {
+            tracer.setFormatter(formatter);
+        }
+        return tracer;
+    }
+	
+	public static Tracer getTracer(CamelContext context) {
+        List<InterceptStrategy> list = context.getInterceptStrategies();
+        for (InterceptStrategy interceptStrategy : list) {
+            if (interceptStrategy instanceof BizFrameTracer) {
+            	log.debug("==========interceptStrategy====================" + interceptStrategy);
+                return (Tracer) interceptStrategy;
+            }
+        }
+        return null;
+    }
+	
 	public String getLogName() {
 		return logName;
 	}

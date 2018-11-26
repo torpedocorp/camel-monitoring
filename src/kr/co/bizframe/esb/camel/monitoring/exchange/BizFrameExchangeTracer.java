@@ -92,7 +92,9 @@ public class BizFrameExchangeTracer extends EventNotifierSupport {
 			} else {
 				for (String id : savedIds) {
 					FinishedExchangeInfo removeMsg = removeExchangeInfo(id);
-					log.debug("========clearFinishedExchangeInfos() " + removeMsg.getExchangeId() + " clear");
+					if (removeMsg != null) {
+						log.debug("========clearFinishedExchangeInfos() " + removeMsg.getExchangeId() + " clear");
+					}
 				}
 			}
 
@@ -129,6 +131,12 @@ public class BizFrameExchangeTracer extends EventNotifierSupport {
 		
 		this.finishedExchangeInfos.put(msg.getExchangeId(), msg);
 	}
+	
+
+	private boolean isExclude(String routeId) {
+		return getExcludeRoutes().contains(routeId);
+	}
+	
 
 	protected void doStart() throws Exception {
 		// filter out unwanted events
@@ -157,10 +165,6 @@ public class BizFrameExchangeTracer extends EventNotifierSupport {
 		 */
 	}
 
-	private boolean isExclude(String routeId) {
-		return getExcludeRoutes().contains(routeId);
-	}
-	
 	@Override
 	public void notify(EventObject event) throws Exception {
 
