@@ -7,19 +7,14 @@
 	<classpathentry kind="lib" path="lib/camel/camel-jpa-2.21.1.jar" sourcepath="C:/Users/bumma/AppData/Local/Temp/.org.sf.feeling.decompiler1536541169977/source/camel-jpa-2.21.1-sources-1536557129487.jar"/>
 	<classpathentry kind="lib" path="lib/derby/derby-10.14.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/etc/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="lib/hibernate/hibernate-commons-annotations-5.0.1.Final.jar"/>
-	<classpathentry kind="lib" path="lib/hibernate/hibernate-core-5.2.11.Final.jar"/>
-	<classpathentry kind="lib" path="lib/hibernate/hibernate-jpa-2.1-api-1.0.0.Final.jar" sourcepath="C:/Users/bumma/AppData/Local/Temp/.org.sf.feeling.decompiler1535417787623/source/hibernate-jpa-2.1-api-1.0.0.Final-sources.jar"/>
-	<classpathentry kind="lib" path="lib/etc/javassist-3.18.1-GA.jar"/>
 	<classpathentry kind="lib" path="lib/etc/jboss-logging-3.3.0.Final.jar"/>
-	<classpathentry kind="lib" path="lib/etc/javax.transaction-api-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/etc/classmate-1.3.0.jar"/>
 	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/system/commons-io-2.6.jar"/>
 	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/system/logback-access-1.1.8.jar"/>
 	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/system/logback-classic-1.1.8.jar"/>
 	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/system/logback-core-1.1.8.jar"/>
 	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/system/slf4j-api-1.7.22.jar"/>
-	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/extended/camel/camel-core-2.21.1.jar" sourcepath="C:/Users/bumma/AppData/Local/Temp/.org.sf.feeling.decompiler1536541169977/source/camel-core-2.21.1-sources-1536557138899.jar"/>
+	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/extended/camel/camel-core-2.21.1.jar" sourcepath="C:/Users/bumma/AppData/Local/Temp/.org.sf.feeling.decompiler1541468850458/source/camel-core-2.21.1-sources-1541656277096.jar"/>
 	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/extended/camel/camel-http-2.21.1.jar"/>
 	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/extended/camel/camel-http-common-2.21.1.jar"/>
 	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/extended/camel/camel-jetty-2.21.1.jar"/>
@@ -29,7 +24,7 @@
 	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/extended/camel/commons-httpclient-3.1.jar"/>
 	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/extended/spring/spring-aop-4.3.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/extended/spring/spring-beans-4.3.0.RELEASE.jar"/>
-	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/extended/spring/spring-context-4.3.0.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/extended/spring/spring-context-4.3.0.RELEASE.jar" sourcepath="C:/Users/bumma/AppData/Local/Temp/.org.sf.feeling.decompiler1536886729336/source/spring-context-4.3.0.RELEASE-sources.jar"/>
 	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/extended/spring/spring-core-4.3.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/extended/spring/spring-expression-4.3.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/extended/spring/spring-jdbc-4.3.0.RELEASE.jar"/>
@@ -39,5 +34,6 @@
 	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/extended/spring/spring-web-4.3.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="/bizframe_mas/dist/lib/extended/spring/spring-webmvc-4.3.0.RELEASE.jar"/>
 	<classpathentry kind="lib" path="lib/etc/gson-2.3.jar"/>
+	<classpathentry kind="lib" path="lib/openjpa/openjpa-all-2.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
